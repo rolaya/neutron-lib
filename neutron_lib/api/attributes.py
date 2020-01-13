@@ -10,6 +10,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+from oslo_log import log
 from webob import exc
 
 from neutron_lib._i18n import _
@@ -20,9 +21,12 @@ from neutron_lib.api.definitions import subnetpool
 from neutron_lib.api import validators
 from neutron_lib import constants
 from neutron_lib import exceptions
+from neutron_lib.common import log_utils
 
+LOG = log.getLogger(__name__)
 
 def _validate_privileges(context, res_dict):
+    LOG.info('%s(): caller(): %s', log_utils.get_fname(1), log_utils.get_fname(2))
     if ('project_id' in res_dict and
             res_dict['project_id'] != context.project_id and
             not (context.is_admin or context.is_advsvc)):
@@ -33,6 +37,7 @@ def _validate_privileges(context, res_dict):
 
 
 def populate_project_info(attributes):
+    LOG.info('%s(): caller(): %s', log_utils.get_fname(1), log_utils.get_fname(2))
     """Ensure that both project_id and tenant_id attributes are present.
 
     If either project_id or tenant_id is present in attributes then ensure
@@ -60,6 +65,7 @@ def populate_project_info(attributes):
 
 
 def _fill_default(res_dict, attr_name, attr_spec):
+    LOG.info('%s(): caller(): %s', log_utils.get_fname(1), log_utils.get_fname(2))
     # update res_dict[attr_name] record with the default value
     # specified in attr_spec, taking into account default_overrides_none
     if attr_spec.get('default_overrides_none'):
@@ -72,6 +78,7 @@ def _fill_default(res_dict, attr_name, attr_spec):
 
 
 def _dict_populate_defaults(attr_value, attr_spec):
+    LOG.info('%s(): caller(): %s', log_utils.get_fname(1), log_utils.get_fname(2))
     # attr_value: dict
     # attr_spec: an attribute specification dict e.g.
     # {
@@ -138,6 +145,7 @@ def _dict_populate_defaults(attr_value, attr_spec):
 
 
 class AttributeInfo(object):
+    LOG.info('%s(): caller(): %s', log_utils.get_fname(1), log_utils.get_fname(2))
     """Provides operations on a resource's attribute map.
 
     AttributeInfo wraps an API resource's attribute dict and provides methods
@@ -146,6 +154,7 @@ class AttributeInfo(object):
     """
 
     def __init__(self, resource_attrs):
+        LOG.info('%s(): caller(): %s', log_utils.get_fname(1), log_utils.get_fname(2))
         """Create a new instance that wraps the given resource attributes.
 
         :param resource_attrs: The resource's attributes that can be any
@@ -166,6 +175,7 @@ class AttributeInfo(object):
             self, res_dict,
             exc_cls=lambda m: exceptions.InvalidInput(error_message=m),
             check_allow_post=True):
+        LOG.info('%s(): caller(): %s', log_utils.get_fname(1), log_utils.get_fname(2))
         """Fill in default values for attributes in a POST request.
 
         When a POST request is made, the attributes with default values do not
@@ -209,6 +219,7 @@ class AttributeInfo(object):
     def convert_values(
             self, res_dict,
             exc_cls=lambda m: exceptions.InvalidInput(error_message=m)):
+        LOG.info('%s(): caller(): %s', log_utils.get_fname(1), log_utils.get_fname(2))
         """Convert and validate attribute values for a request.
 
         :param res_dict: The resource attributes from the request.
@@ -238,6 +249,7 @@ class AttributeInfo(object):
                     raise exc_cls(msg)
 
     def populate_project_id(self, context, res_dict, is_create):
+        LOG.info('%s(): caller(): %s', log_utils.get_fname(1), log_utils.get_fname(2))
         """Populate the owner information in a request body.
 
         Ensure both project_id and tenant_id attributes are present.
@@ -269,6 +281,7 @@ class AttributeInfo(object):
                 raise exc.HTTPBadRequest(msg)
 
     def verify_attributes(self, attrs_to_verify):
+        LOG.info('%s(): caller(): %s', log_utils.get_fname(1), log_utils.get_fname(2))
         """Reject unknown attributes.
 
         Consumers should ensure the project info is populated in the
@@ -286,6 +299,7 @@ class AttributeInfo(object):
 
 
 def _core_resource_attributes():
+    LOG.info('%s(): caller(): %s', log_utils.get_fname(1), log_utils.get_fname(2))
     resources = {}
     for core_def in [network.RESOURCE_ATTRIBUTE_MAP,
                      port.RESOURCE_ATTRIBUTE_MAP,
@@ -300,6 +314,7 @@ RESOURCES = _core_resource_attributes()
 
 
 def retrieve_valid_sort_keys(attr_info):
+    LOG.info('%s(): caller(): %s', log_utils.get_fname(1), log_utils.get_fname(2))
     """Retrieve sort keys from `attr_info` dict.
 
     Iterate the `attr_info`, filter and return the attributes that are

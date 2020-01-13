@@ -38,7 +38,7 @@ _QOS_RULE_COMMON_FIELDS = {
     }
 }
 
-ALIAS = 'qos-rules-alias'
+ALIAS = 'qos_rules_alias'
 IS_SHIM_EXTENSION = False
 IS_STANDARD_ATTR_EXTENSION = False
 NAME = 'Quality of Service rules alias API'
